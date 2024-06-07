@@ -51,7 +51,7 @@
         font-size: 25px;
     }
     .filter-block.bottom-line {
-        border-bottom: 1px solid rgba($color: #31795A, $alpha: 0.3);
+        border-bottom: 1px solid rgba($color: #315a79, $alpha: 0.3);
     }
     .filter-title {
         font-size: 1em;
@@ -933,7 +933,7 @@
             border-radius: 5px;
             padding: 0 15px;
             margin-top: 5px;
-            background: rgba($color: #31795A, $alpha: 0.12);
+            background: rgba($color: #315a79, $alpha: 0.12);
             @include transition(0.2s);
             i {
                 font-size: 13px;

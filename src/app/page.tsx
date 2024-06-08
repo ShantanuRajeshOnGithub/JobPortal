@@ -11,8 +11,10 @@ import FancyBanner from "./components/fancy-banner/fancy-banner";
 import JobPortalIntro from "./components/job-portal-intro/job-portal-intro";
 import FooterOne from "@/layouts/footers/footer-one";
 import Wrapper from "@/layouts/wrapper";
+import { HomePageProps } from "@/types/user-type";
 
 export default function Home() {
+  
   return (
     <Wrapper>
       {/* header start */}
@@ -20,48 +22,53 @@ export default function Home() {
       {/* header end */}
 
       {/* hero banner start */}
-      <HeroBanner />
+      <HeroBanner
+        users={[
+          { _id: "1", name: "Sathish" },
+          { _id: "2", name: "Kumar" }
+        ]}
+      />
       {/* hero banner end */}
 
       {/* category section start */}
-      <CategorySection/>
+      <CategorySection />
       {/* category section end */}
 
       {/* feature one start */}
-      <FeatureOne/>
+      <FeatureOne />
       {/* feature one end */}
 
       {/* how works start */}
-      <HowItWorks/>
+      <HowItWorks />
       {/* how works end */}
 
       {/* expert one section start */}
-      <ExpertsOne/>
+      <ExpertsOne />
       {/* expert one section end */}
 
       {/* feedback one start */}
-      <FeedbackOne/>
+      <FeedbackOne />
       {/* feedback one end */}
 
       {/* text feature two start */}
-      <FeatureTwo/>
+      <FeatureTwo />
       {/* text feature two end */}
 
       {/* blog section one start */}
-      <BlogOne/>
+      <BlogOne />
       {/* blog section one end */}
 
       {/* fancy banner start */}
-      <FancyBanner/>
+      <FancyBanner />
       {/* fancy banner end */}
 
       {/* job portal intro start */}
-      <JobPortalIntro/>
+      <JobPortalIntro />
       {/* job portal intro end */}
 
       {/* footer start */}
-      <FooterOne/>
+      <FooterOne />
       {/* footer end */}
     </Wrapper>
   );
-}
+};

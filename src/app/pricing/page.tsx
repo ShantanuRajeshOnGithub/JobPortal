@@ -7,7 +7,6 @@ import CompanyBreadcrumb from "../components/common/common-breadcrumb";
 import FooterOne from "@/layouts/footers/footer-one";
 import PricingOne from "../components/pricing/pricing-one";
 
-
 export const metadata: Metadata = {
   title: "Pricing",
 };
@@ -16,7 +15,7 @@ const PricingPage = () => {
   return (
     <Wrapper>
       <div className="main-page-wrapper">
-        {/* header start */}
+        {/* header start 2*/}
         <Header />
         {/* header end */}
 

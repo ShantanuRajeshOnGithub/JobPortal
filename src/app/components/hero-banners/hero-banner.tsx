@@ -28,8 +28,6 @@ const HeroBanner: React.FC = () => {
     fetchData();
   }, []);
 
-  console.log("GetServerSideProps4", users);
-
   return (
     <>
       <div className="hero-banner-one position-relative">

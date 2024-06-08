@@ -18,7 +18,7 @@ const HeroBanner: React.FC = () => {
         console.log("GetServerSideProps51");
         const response = await fetch("api/users"); // Make request to API route
         const data = await response.json();
-        console.log("GetServerSideProps5", data);
+        console.log("GetServerSideProps5", data, process.env.MONGODB_URI);
         setUsers(data);
       } catch (error) {
         console.error("Error fetching user data:", error);

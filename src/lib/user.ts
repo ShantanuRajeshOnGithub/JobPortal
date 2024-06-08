@@ -11,14 +11,14 @@ export async function getUserList() {
       .limit(13)
       .toArray();
 
-      console.log(users);
+    console.log(users);
     return {
       users: JSON.parse(JSON.stringify(users))
     };
   } catch (e) {
     console.error(e);
     return {
-      users: []
+      users: [{ _id: "1", name: "sathish" }]
     };
   }
 }

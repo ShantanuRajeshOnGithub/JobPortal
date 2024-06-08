@@ -22,12 +22,7 @@ export default function Home() {
       {/* header end */}
 
       {/* hero banner start */}
-      <HeroBanner
-        users={[
-          { _id: "1", name: "Sathish" },
-          { _id: "2", name: "Kumar" }
-        ]}
-      />
+      <HeroBanner />
       {/* hero banner end */}
 
       {/* category section start */}

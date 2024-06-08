@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 // internal
 import shape_1 from "@/assets/images/shape/shape_01.svg";
@@ -7,10 +7,9 @@ import shape_2 from "@/assets/images/shape/shape_02.svg";
 import shape_3 from "@/assets/images/shape/shape_03.svg";
 import main_img from "@/assets/images/assets/img_01.jpg";
 import SearchForm from "../forms/search-form";
-import { HomePageProps } from "@/types/user-type";
+import { User } from "@/types/user-type";
 
-const HeroBanner: React.FC<HomePageProps> = ({ users1 }) => {
-
+const HeroBanner: React.FC = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -95,7 +94,7 @@ const HeroBanner: React.FC<HomePageProps> = ({ users1 }) => {
       <div>
         <h1>Users</h1>
         <ul>
-          {users.map(user => (
+          {(users as User[]).map(user => (
             <li key={user._id}>{user.name}</li>
           ))}
         </ul>

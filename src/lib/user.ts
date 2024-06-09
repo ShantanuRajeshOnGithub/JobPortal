@@ -8,7 +8,7 @@ export async function getUserList() {
     const users = await db
       .collection("users")
       .find({})
-      .limit(5)
+      .limit(1)
       .toArray();
 
     console.log(users);

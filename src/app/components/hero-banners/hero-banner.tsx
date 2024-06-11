@@ -15,13 +15,16 @@ const HeroBanner: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("GetServerSideProps51");
-        const response = await fetch("api/users"); // Make request to API route
+        const response = await fetch("/api/users");
+    
+        // Check if the response status is ok
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        console.log("GetServerSideProps5", data, process.env.MONGODB_URI);
-        setUsers(data);
+        setUsers(data.users);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error('Fetch Error:', error);
       }
     };
 

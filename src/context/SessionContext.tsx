@@ -5,7 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-
+import log from "@/utils/clientLogger";
 interface Session {
   user: {
     name: string;
@@ -25,21 +25,27 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Fetch initial session data here
+    log.debug("Fetching initial session data");
     // setSession(initialSessionData);
   }, []);
 
   const fetchWithSession = async (url: string, options?: RequestInit) => {
+    log.debug(`Fetching URL: ${url}`);
     const response = await fetch(url, options);
 
     if (response.redirected) {
+      log.warn(`Redirected to: ${response.url}`);
       window.location.href = response.url;
       return null;
     }
 
     if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
+      const error = `Error: ${response.statusText}`;
+      log.error(error);
+      throw new Error(error);
     }
 
+    log.debug("Fetch successful");
     return response.json();
   };
 
@@ -53,7 +59,9 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 export const useSession = () => {
   const context = useContext(SessionContext);
   if (context === null) {
-    throw new Error("useSession must be used within a SessionProvider");
+    const error = "useSession must be used within a SessionProvider";
+    log.error(error);
+    throw new Error(error);
   }
   return context;
 };

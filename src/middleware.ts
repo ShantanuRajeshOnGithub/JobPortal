@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import clientPromise from "@/lib/db"; // Adjust the import path as needed
+import logger from "@/utils/serverLogger";
 
 async function getSessionFromRequest(req: NextRequest) {
   try {
-    console.log("Fetching session from auth/session API...");
+    logger.info("Fetching session from auth/session API...");
     const response = await fetch(
       `${process.env.NEXTAUTH_URL}/api/auth/session`,
       {
@@ -15,21 +16,21 @@ async function getSessionFromRequest(req: NextRequest) {
     );
 
     if (!response.ok) {
-      console.error("Failed to fetch session:", response.statusText);
+      logger.error("Failed to fetch session:", response.statusText);
       return null;
     }
 
     const session = await response.json();
-    console.log("Session fetched:", session);
+    logger.info("Session fetched:", session);
     return Object.keys(session).length ? session : null;
   } catch (error) {
-    console.error("Error fetching session:", error);
+    logger.error("Error fetching session:", error);
     return null;
   }
 }
 
 export async function middleware(request: NextRequest) {
-  console.log("Middleware is running for:", request.nextUrl.pathname);
+  logger.info(`Middleware is running for: ${request.nextUrl.pathname}`);
 
   /*   // Always redirect to /login for testing
   const loginUrl = new URL('/login', request.url);
@@ -41,17 +42,20 @@ export async function middleware(request: NextRequest) {
   return response; */
 
   // Exclude the session API endpoint from the middleware
-  /* if (request.nextUrl.pathname.startsWith('/api/auth/session')) {
-    console.log("Excluding session endpoint from middleware.");
+  if (request.nextUrl.pathname.startsWith("/api/auth/session")) {
+    logger.info("Excluding session endpoint from middleware.");
     return NextResponse.next();
-  } */
+  }
 
   const session = await getSessionFromRequest(request);
 
   if (!session) {
-    console.log("No session found. Redirecting to login...");
+    logger.warn("No session found. Redirecting to login...");
     const loginUrl = new URL("/login", request.url);
-    return NextResponse.redirect(loginUrl);
+    logger.info(`Redirect URL: ${loginUrl.toString()}`);
+    const response = NextResponse.redirect(loginUrl);
+    logger.info("Redirect response:", response);
+    return response;
   }
 
   /*
@@ -78,7 +82,7 @@ export async function middleware(request: NextRequest) {
   }
   */
 
-  console.log("Session exists, proceeding to next response...");
+  logger.info("Session exists, proceeding to next response...");
   return NextResponse.next();
 }
 

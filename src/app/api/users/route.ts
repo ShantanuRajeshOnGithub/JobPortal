@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
+import logger from "@/utils/serverLogger";
 
 export async function GET() {
+  logger.info("User Route Get.");
   try {
     const client = await clientPromise;
     const db = client.db("sample_mflix");
@@ -14,7 +16,7 @@ export async function GET() {
 
     return NextResponse.json({ users: users }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching user list:", error);
+    logger.info("Error fetching user list:", error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

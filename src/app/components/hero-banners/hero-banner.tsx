@@ -9,6 +9,7 @@ import main_img from "@/assets/images/assets/img_01.jpg";
 import SearchForm from "../forms/search-form";
 import { User } from "@/types/user-type";
 import { useSession } from "@/context/SessionContext";
+import log from "@/utils/clientLogger";
 
 const HeroBanner: React.FC = () => {
   const [users, setUsers] = useState([]);
@@ -20,7 +21,7 @@ const HeroBanner: React.FC = () => {
         const data = await fetchWithSession("/api/users");
         setUsers(data.users);
       } catch (error) {
-        console.error("Fetch Error:", error);
+        log.error("Fetch Error:", error);
       }
     };
 

@@ -8,23 +8,19 @@ import shape_3 from "@/assets/images/shape/shape_03.svg";
 import main_img from "@/assets/images/assets/img_01.jpg";
 import SearchForm from "../forms/search-form";
 import { User } from "@/types/user-type";
+import { useSession } from "@/context/SessionContext";
 
 const HeroBanner: React.FC = () => {
   const [users, setUsers] = useState([]);
+  const { fetchWithSession } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/users");
-    
-        // Check if the response status is ok
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await fetchWithSession("/api/users");
         setUsers(data.users);
       } catch (error) {
-        console.error('Fetch Error:', error);
+        console.error("Fetch Error:", error);
       }
     };
 
@@ -95,7 +91,7 @@ const HeroBanner: React.FC = () => {
       <div>
         <h1>Users</h1>
         <ul>
-          {(users as User[]).map(user => (
+          {(users as User[]).map((user) => (
             <li key={user._id}>{user.name}</li>
           ))}
         </ul>

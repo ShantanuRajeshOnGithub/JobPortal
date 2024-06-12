@@ -1,19 +1,17 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../[...nextauth]';
-import { parse } from 'cookie';
-import { IncomingMessage, ServerResponse } from 'http';
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../[...nextauth]";
+import { parse } from "cookie";
+import { IncomingMessage, ServerResponse } from "http";
 
 export async function GET(request: NextRequest) {
-  console.log("session::");
-
   // Simulate the request and response objects
   const req = {
     headers: {
       ...Object.fromEntries(request.headers.entries()),
-      cookie: request.headers.get('cookie') || '',
+      cookie: request.headers.get("cookie") || "",
     },
-    cookies: parse(request.headers.get('cookie') || ''),
+    cookies: parse(request.headers.get("cookie") || ""),
   } as IncomingMessage & { cookies: Partial<{ [key: string]: string }> };
 
   const res = new ServerResponse(req);
@@ -25,12 +23,12 @@ export async function GET(request: NextRequest) {
   };
 
   // Uncomment the line below to use the actual session fetching
-  // const session = await getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
 
-  const session = mockSession; // Use mock session for testing
+  //const session = mockSession; // Use mock session for testing
 
   if (!session) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   return NextResponse.json(session, { status: 200 });

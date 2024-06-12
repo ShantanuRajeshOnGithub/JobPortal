@@ -1,26 +1,29 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import clientPromise from '@/lib/db'; // Adjust the import path as needed
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import clientPromise from "@/lib/db"; // Adjust the import path as needed
 
 async function getSessionFromRequest(req: NextRequest) {
   try {
-    console.log('Fetching session from auth/session API...');
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/auth/session`, {
-      headers: {
-        cookie: req.headers.get('cookie') || '',
-      },
-    });
+    console.log("Fetching session from auth/session API...");
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/auth/session`,
+      {
+        headers: {
+          cookie: req.headers.get("cookie") || "",
+        },
+      }
+    );
 
     if (!response.ok) {
-      console.error('Failed to fetch session:', response.statusText);
+      console.error("Failed to fetch session:", response.statusText);
       return null;
     }
 
     const session = await response.json();
-    console.log('Session fetched:', session);
+    console.log("Session fetched:", session);
     return Object.keys(session).length ? session : null;
   } catch (error) {
-    console.error('Error fetching session:', error);
+    console.error("Error fetching session:", error);
     return null;
   }
 }
@@ -28,17 +31,27 @@ async function getSessionFromRequest(req: NextRequest) {
 export async function middleware(request: NextRequest) {
   console.log("Middleware is running for:", request.nextUrl.pathname);
 
+  /*   // Always redirect to /login for testing
+  const loginUrl = new URL('/login', request.url);
+  console.log("Redirect URL:", loginUrl.toString());
+
+  const response = NextResponse.redirect(loginUrl);
+  console.log("Redirect response:", response);
+
+  return response; */
+
   // Exclude the session API endpoint from the middleware
-  if (request.nextUrl.pathname.startsWith('/api/auth/session')) {
+  /* if (request.nextUrl.pathname.startsWith('/api/auth/session')) {
     console.log("Excluding session endpoint from middleware.");
     return NextResponse.next();
-  }
+  } */
 
   const session = await getSessionFromRequest(request);
 
   if (!session) {
     console.log("No session found. Redirecting to login...");
-    return NextResponse.redirect(new URL('/login', request.url));
+    const loginUrl = new URL("/login", request.url);
+    return NextResponse.redirect(loginUrl);
   }
 
   /*
@@ -70,5 +83,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/users/:path*'], // Adjust paths as needed
+  matcher: ["/api/users/:path*"], // Adjust paths as needed
 };

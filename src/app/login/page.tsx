@@ -1,53 +1,37 @@
-"use client";
+import React from "react";
+import { Metadata } from "next";
+import Header from "@/layouts/headers/header";
+import Wrapper from "@/layouts/wrapper";
+import CompanyBreadcrumb from "../components/common/common-breadcrumb";
+import FooterOne from "@/layouts/footers/footer-one";
+import LoginArea from "../components/login/login-area";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+export const metadata: Metadata = {
+  title: "Login",
+};
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
-
-    if (result && result.ok) {
-      router.push("/protected");
-    } else if (result && result.error) {
-      alert(result.error);
-    } else {
-      alert("An unexpected error occurred");
-    }
-  };
-
+const LoginPage = () => {
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <Wrapper>
+      <div className="main-page-wrapper">
+        {/* header start */}
+        <Header />
+        {/* header end */}
+
+        {/*breadcrumb start */}
+        <CompanyBreadcrumb title="Login" subtitle="Login to your account" />
+        {/*breadcrumb end */}
+
+        {/* Login area start */}
+        <LoginArea />
+        {/* Login area end */}
+
+        {/* footer start */}
+        <FooterOne />
+        {/* footer end */}
+      </div>
+    </Wrapper>
   );
-}
+};
+
+export default LoginPage;

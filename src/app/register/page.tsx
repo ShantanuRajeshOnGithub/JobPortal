@@ -26,7 +26,7 @@ const RegisterPage = () => {
         {/*breadcrumb end */}
 
         {/* register area start */}
-        <RegisterArea/>
+        <RegisterArea />
         {/* register area end */}
 
         {/* footer start */}

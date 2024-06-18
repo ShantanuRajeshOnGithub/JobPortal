@@ -1,9 +1,12 @@
+"use client"; // Ensure this is a client component
 import "./globals.scss";
 import { Metadata } from "next";
 import localFont from "next/font/local";
 import { EB_Garamond } from "next/font/google";
+import { useEffect, useState } from "react";
 import BackToTopCom from "./components/common/back-to-top-com";
 import { Providers } from "@/redux/provider";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const gordita = localFont({
   src: [
@@ -47,6 +50,20 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [isScrollable, setIsScrollable] = useState(false);
+
+  useEffect(() => {
+    const checkScrollable = () => {
+      setIsScrollable(
+        document.documentElement.scrollHeight > window.innerHeight
+      );
+    };
+
+    checkScrollable();
+
+    window.addEventListener("resize", checkScrollable);
+    return () => window.removeEventListener("resize", checkScrollable);
+  }, []);
   return (
     <html lang="en">
       <head>
@@ -56,8 +73,10 @@ export default function RootLayout({
         suppressHydrationWarning={true}
         className={`${gordita.variable} ${garamond.variable}`}
       >
-        <Providers>{children}</Providers>
-        <BackToTopCom />
+        <Providers>
+          <ErrorBoundary>{children}</ErrorBoundary>
+        </Providers>
+        {isScrollable && <BackToTopCom />}
       </body>
     </html>
   );

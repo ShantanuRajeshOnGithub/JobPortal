@@ -3,6 +3,7 @@ import Image from "next/image";
 import RegisterForm from "../forms/register-form";
 import google from "@/assets/images/icon/google.png";
 import facebook from "@/assets/images/icon/facebook.png";
+import Link from "next/link";
 
 const RegisterArea = () => {
   return (
@@ -79,14 +80,17 @@ const RegisterArea = () => {
             </div>
             <p className="text-center mt-10">
               Have an account?{" "}
-              <a
+              {/* <a
                 href="#"
                 className="fw-500"
                 data-bs-toggle="modal"
                 data-bs-target="#loginModal"
               >
                 Sign In
-              </a>
+              </a> */}
+              <Link href="/login" className="fw-500">
+                Sign In
+              </Link>
             </p>
           </div>
         </div>

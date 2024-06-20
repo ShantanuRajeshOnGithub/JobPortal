@@ -1,12 +1,18 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function ProtectedPage() {
+  const [isClient, setIsClient] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    // Ensures the component is only rendered on the client side
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (status === "unauthenticated") {

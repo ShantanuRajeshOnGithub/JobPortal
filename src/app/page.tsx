@@ -14,7 +14,6 @@ import Wrapper from "@/layouts/wrapper";
 import { HomePageProps } from "@/types/user-type";
 
 export default function Home() {
-  
   return (
     <Wrapper>
       {/* header start */}
@@ -66,4 +65,4 @@ export default function Home() {
       {/* footer end */}
     </Wrapper>
   );
-};
+}

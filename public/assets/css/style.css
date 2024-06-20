@@ -4146,6 +4146,9 @@ iframe {
 .registration-section {
   background: #eff6f3;
 }
+.login-section {
+  background: #eff6f3;
+}
 
 .modal .modal-dialog {
   height: auto;

@@ -4,13 +4,13 @@ import Header from "@/layouts/headers/header";
 import Wrapper from "@/layouts/wrapper";
 import CompanyBreadcrumb from "../components/common/common-breadcrumb";
 import FooterOne from "@/layouts/footers/footer-one";
-import RegisterArea from "../components/register/register-area";
+import LoginArea from "../components/login/login-area";
 
 export const metadata: Metadata = {
-  title: "Register",
+  title: "Login",
 };
 
-const RegisterPage = () => {
+const LoginPage = () => {
   return (
     <Wrapper>
       <div className="main-page-wrapper">
@@ -19,15 +19,12 @@ const RegisterPage = () => {
         {/* header end */}
 
         {/*breadcrumb start */}
-        <CompanyBreadcrumb
-          title="Register"
-          subtitle="Create an account & Start posting or hiring talents"
-        />
+        <CompanyBreadcrumb title="Login" subtitle="Login to your account" />
         {/*breadcrumb end */}
 
-        {/* register area start */}
-        <RegisterArea />
-        {/* register area end */}
+        {/* Login area start */}
+        <LoginArea />
+        {/* Login area end */}
 
         {/* footer start */}
         <FooterOne />
@@ -37,4 +34,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

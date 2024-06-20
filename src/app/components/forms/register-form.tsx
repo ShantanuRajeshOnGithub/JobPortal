@@ -1,16 +1,21 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import * as Yup from "yup";
 import { Resolver, useForm } from "react-hook-form";
 import ErrorMsg from "../common/error-msg";
 import icon from "@/assets/images/icon/icon_60.svg";
+import { useSession } from "@/context/SessionContext";
+import log from "@/utils/clientLogger";
 
 // form data type
 type IFormData = {
   name: string;
   email: string;
   password: string;
+  accountType: string;
+  acceptedTerms: boolean;
 };
 
 // schema
@@ -18,46 +23,94 @@ const schema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(6).label("Password"),
+  acceptedTerms: Yup.boolean()
+    .oneOf([true], "Terms and conditions must be accepted")
+    .required(),
 });
+
 // resolver
 const resolver: Resolver<IFormData> = async (values) => {
+  const errors: any = {};
+  if (!values.name) {
+    errors.name = {
+      type: "required",
+      message: "Name is required.",
+    };
+  }
+  if (!values.email) {
+    errors.email = {
+      type: "required",
+      message: "Email is required.",
+    };
+  }
+  if (!values.password) {
+    errors.password = {
+      type: "required",
+      message: "Password is required.",
+    };
+  }
+  if (!values.acceptedTerms) {
+    errors.acceptedTerms = {
+      type: "required",
+      message: "Terms and conditions must be accepted.",
+    };
+  }
+
   return {
     values: values.name ? values : {},
-    errors: !values.name
-      ? {
-        name: {
-          type: "required",
-          message: "Name is required.",
-        },
-        email: {
-          type: "required",
-          message: "Email is required.",
-        },
-        password: {
-          type: "required",
-          message: "Password is required.",
-        }
-      }
-      : {},
+    errors,
   };
 };
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  accountType: "candidate" | "employer";
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
   const [showPass, setShowPass] = useState<boolean>(false);
+  const { fetchWithSession } = useSession(); // Use fetchWithSession from useSession
+
   // react hook form
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IFormData>({ resolver });
+  } = useForm<IFormData>({
+    resolver,
+    defaultValues: {
+      accountType,
+      name: "",
+      email: "",
+      password: "",
+      acceptedTerms: false,
+    },
+  });
+
   // on submit
-  const onSubmit = (data: IFormData) => {
-    if (data) {
-      alert("Register successfully!");
+  const onSubmit = async (data: IFormData) => {
+    try {
+      const response = await fetchWithSession("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.status === 200) {
+        reset();
+      } else if (response.status === 400) {
+        log.error("Bad request error response from server:", response);
+      } else {
+        log.error("Error response from server:", response);
+      }
+    } catch (error) {
+      log.error("Error during registration:", error);
+      alert("An unexpected error occurred");
     }
-    reset();
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="row">
@@ -67,8 +120,7 @@ const RegisterForm = () => {
             <input
               type="text"
               placeholder="James Brower"
-              {...register("name", { required: `Name is required!` })}
-              name="name"
+              {...register("name")}
             />
             <div className="help-block with-errors">
               <ErrorMsg msg={errors.name?.message!} />
@@ -81,8 +133,7 @@ const RegisterForm = () => {
             <input
               type="email"
               placeholder="james@example.com"
-              {...register("email", { required: `Email is required!` })}
-              name="email"
+              {...register("email")}
             />
             <div className="help-block with-errors">
               <ErrorMsg msg={errors.email?.message!} />
@@ -96,8 +147,7 @@ const RegisterForm = () => {
               type={`${showPass ? "text" : "password"}`}
               placeholder="Enter Password"
               className="pass_log_id"
-              {...register("password", { required: `Password is required!` })}
-              name="password"
+              {...register("password")}
             />
             <span
               className="placeholder_icon"
@@ -117,18 +167,25 @@ const RegisterForm = () => {
             <div>
               <input
                 type="checkbox"
-                name="remember"
+                id={`acceptedTerms-${accountType}`} // Ensure unique ID
+                {...register("acceptedTerms")}
               />
-              <label htmlFor="remember">
+              <label htmlFor={`acceptedTerms-${accountType}`}>
                 By hitting the Register button, you agree to the{" "}
                 <a href="#">Terms conditions</a> &{" "}
                 <a href="#">Privacy Policy</a>
               </label>
             </div>
+            <div className="help-block with-errors">
+              <ErrorMsg msg={errors.acceptedTerms?.message!} />
+            </div>
           </div>
         </div>
         <div className="col-12">
-          <button type="submit" className="btn-eleven fw-500 tran3s d-block mt-20">
+          <button
+            type="submit"
+            className="btn-eleven fw-500 tran3s d-block mt-20"
+          >
             Register
           </button>
         </div>

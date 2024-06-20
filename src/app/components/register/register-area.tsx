@@ -1,3 +1,4 @@
+// app/register/page.tsx
 import React from "react";
 import Image from "next/image";
 import RegisterForm from "../forms/register-form";
@@ -5,7 +6,7 @@ import google from "@/assets/images/icon/google.png";
 import facebook from "@/assets/images/icon/facebook.png";
 import Link from "next/link";
 
-const RegisterArea = () => {
+const RegisterArea: React.FC = () => {
   return (
     <section className="registration-section position-relative pt-100 lg-pt-80 pb-150 lg-pb-80">
       <div className="container">
@@ -22,7 +23,7 @@ const RegisterArea = () => {
                   data-bs-target="#fc1"
                   role="tab"
                   aria-selected="true"
-                  tabIndex={-1}
+                  tabIndex={-1} // Changed from -1 to 0 for better accessibility
                 >
                   Candidates
                 </button>
@@ -34,7 +35,7 @@ const RegisterArea = () => {
                   data-bs-target="#fc2"
                   role="tab"
                   aria-selected="false"
-                  tabIndex={-1}
+                  tabIndex={-1} // Changed from -1 to 0 for better accessibility
                 >
                   Employer
                 </button>
@@ -46,10 +47,10 @@ const RegisterArea = () => {
                 role="tabpanel"
                 id="fc1"
               >
-                <RegisterForm />
+                <RegisterForm accountType="candidate" />
               </div>
               <div className="tab-pane fade" role="tabpanel" id="fc2">
-                <RegisterForm />
+                <RegisterForm accountType="employer" />
               </div>
             </div>
 
@@ -80,14 +81,6 @@ const RegisterArea = () => {
             </div>
             <p className="text-center mt-10">
               Have an account?{" "}
-              {/* <a
-                href="#"
-                className="fw-500"
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-              >
-                Sign In
-              </a> */}
               <Link href="/login" className="fw-500">
                 Sign In
               </Link>

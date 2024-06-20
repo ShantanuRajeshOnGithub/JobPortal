@@ -41,12 +41,19 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
     if (!response.ok) {
       const error = `Error: ${response.statusText}`;
-      log.error(error);
-      throw new Error(error);
+      // Specific handling for different status codes
+      if (response.status === 400) {
+        // Return the response object for 400 errors
+        return { ...response.json(), status: 400 };
+      } else {
+        const error = `Error: ${response.statusText}`;
+        log.error(error);
+        throw new Error(error);
+      }
     }
 
     log.debug("Fetch successful");
-    return response.json();
+    return { ...response.json(), status: 200 };
   };
 
   return (

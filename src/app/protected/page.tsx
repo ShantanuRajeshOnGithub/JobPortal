@@ -6,13 +6,18 @@ import { useRouter } from "next/navigation";
 
 export default function ProtectedPage() {
   const [isClient, setIsClient] = useState(false);
-  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     // Ensures the component is only rendered on the client side
     setIsClient(true);
   }, []);
+
+  if (!isClient) {
+    return <p>Loading...</p>;
+  }
+
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if (status === "unauthenticated") {

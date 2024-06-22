@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       });
 
       // Clear session cookies for vercel
-      res.cookies.set("__Host-next-auth.session-token", "", {
+      res.cookies.set("__Secure-next-auth.session-token", "", {
         path: "/",
         expires: new Date(0),
         secure: true,

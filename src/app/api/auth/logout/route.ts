@@ -43,6 +43,19 @@ export async function POST(request: NextRequest) {
         expires: new Date(0),
       });
 
+      res.headers.set(
+        "Set-Cookie",
+        "next-auth.session-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      );
+      res.headers.set(
+        "Set-Cookie",
+        "next-auth.csrf-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      );
+      res.headers.set(
+        "Set-Cookie",
+        "next-auth.callback-url=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      );
+
       return res;
     } else {
       const error = await response.json();

@@ -3,8 +3,6 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
-  const cookie = request.headers.get("cookie");
-
   const token = await getToken({
     req: request,
     secret: process.env.JWT_SECRET,
@@ -37,6 +35,10 @@ export async function POST(request: NextRequest) {
         expires: new Date(0),
       });
       res.cookies.set("next-auth.csrf-token", "", {
+        path: "/",
+        expires: new Date(0),
+      });
+      res.cookies.set("next-auth.callback-url", "", {
         path: "/",
         expires: new Date(0),
       });

@@ -43,6 +43,31 @@ export async function POST(request: NextRequest) {
         expires: new Date(0),
       });
 
+      // Clear session cookies for vercel
+      res.cookies.set("__Secure-next-auth.session-token", "", {
+        path: "/",
+        expires: new Date(0),
+        secure: true,
+        httpOnly: true,
+        sameSite: "lax",
+      });
+
+      res.cookies.set("__Host-next-auth.csrf-token", "", {
+        path: "/",
+        expires: new Date(0),
+        secure: true,
+        httpOnly: false,
+        sameSite: "lax",
+      });
+
+      res.cookies.set("__Secure-next-auth.callback-url", "", {
+        path: "/",
+        expires: new Date(0),
+        secure: true,
+        httpOnly: false,
+        sameSite: "lax",
+      });
+
       return res;
     } else {
       const error = await response.json();

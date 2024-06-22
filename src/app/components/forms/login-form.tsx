@@ -5,6 +5,9 @@ import * as Yup from "yup";
 import { Resolver, useForm } from "react-hook-form";
 import ErrorMsg from "../common/error-msg";
 import icon from "@/assets/images/icon/icon_60.svg";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation"; // Import from next/navigation
+import log from "@/utils/clientLogger";
 
 // form data type
 type IFormData = {
@@ -39,7 +42,9 @@ const resolver: Resolver<IFormData> = async (values) => {
 
 const LoginForm = () => {
   const [showPass, setShowPass] = useState<boolean>(false);
-  // react hook form
+  const router = useRouter(); // Add router for redirection
+  const [error, setError] = useState<string | null>(null); // State to handle errors
+
   const {
     register,
     handleSubmit,
@@ -47,10 +52,22 @@ const LoginForm = () => {
     reset,
   } = useForm<IFormData>({ resolver });
   // on submit
-  const onSubmit = (data: IFormData) => {
-    if (data) {
-      alert("Login successfully!");
+  const onSubmit = async (data: IFormData) => {
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
+    log.debug("result:", result);
+    if (result?.error) {
+      setError(result.error);
+    } else if (result?.ok) {
+      setError(null);
+      router.push("/"); // Redirect to home page or another protected page
+    } else {
+      setError("Unexpected error occurred");
     }
+
     reset();
   };
   return (

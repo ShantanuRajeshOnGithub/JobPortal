@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../[...nextauth]";
 import { parse } from "cookie";
 import { IncomingMessage, ServerResponse } from "http";
+import { authOptions } from "../[...nextauth]/route";
 
 export async function GET(request: NextRequest) {
   // Simulate the request and response objects
@@ -24,7 +24,6 @@ export async function GET(request: NextRequest) {
 
   // Uncomment the line below to use the actual session fetching
   const session = await getServerSession(req, res, authOptions);
-
   //const session = mockSession; // Use mock session for testing
 
   if (!session) {

@@ -19,6 +19,7 @@ const HeroBanner: React.FC = () => {
     const fetchData = async () => {
       try {
         const data = await fetchWithSession("/api/users");
+        log.debug("data:", data);
         setUsers(data.users);
       } catch (error) {
         log.error("Fetch Error:", error);
@@ -92,7 +93,7 @@ const HeroBanner: React.FC = () => {
       <div>
         <h1>Users</h1>
         <ul>
-          {(users as User[]).map((user) => (
+          {(users as User[])?.map((user) => (
             <li key={user._id}>{user.name}</li>
           ))}
         </ul>

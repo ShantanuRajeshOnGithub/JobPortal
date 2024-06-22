@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import * as Yup from "yup";
 import { Resolver, useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import ErrorMsg from "../common/error-msg";
 import icon from "@/assets/images/icon/icon_60.svg";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Import from next/navigation
+import { useSession } from "@/context/SessionContext"; // Import the custom useSession
 import log from "@/utils/clientLogger";
 
 // form data type
@@ -43,6 +44,7 @@ const resolver: Resolver<IFormData> = async (values) => {
 const LoginForm = () => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const router = useRouter(); // Add router for redirection
+  const { session, updateSession } = useSession(); // Access updateSession
   const [error, setError] = useState<string | null>(null); // State to handle errors
 
   const {
@@ -51,18 +53,21 @@ const LoginForm = () => {
     formState: { errors },
     reset,
   } = useForm<IFormData>({ resolver });
+
   // on submit
   const onSubmit = async (data: IFormData) => {
+    const { email, password } = data;
     const result = await signIn("credentials", {
       redirect: false,
-      email: data.email,
-      password: data.password,
+      email,
+      password,
     });
     log.debug("result:", result);
     if (result?.error) {
       setError(result.error);
     } else if (result?.ok) {
       setError(null);
+      await updateSession(); // Update the session after login
       router.push("/"); // Redirect to home page or another protected page
     } else {
       setError("Unexpected error occurred");

@@ -7,6 +7,9 @@ import LoginForm from "@/app/components/forms/login-form";
 import Image from "next/image";
 import google from "@/assets/images/icon/google.png";
 import facebook from "@/assets/images/icon/facebook.png";
+import withAuthRedirect from "@/utils/withAuthRedirect";
+
+const ProtectedLoginForm = withAuthRedirect(LoginForm);
 
 export default function LoginArea() {
   const [hasMounted, setHasMounted] = useState(false);
@@ -32,7 +35,7 @@ export default function LoginArea() {
             </p>
           </div>
           <div className="form-wrapper m-auto">
-            <LoginForm />
+            <ProtectedLoginForm />
             <div className="d-flex align-items-center mt-30 mb-10">
               <div className="line"></div>
               <span className="pe-3 ps-3">OR</span>

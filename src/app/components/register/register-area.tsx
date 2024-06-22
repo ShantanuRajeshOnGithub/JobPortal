@@ -1,10 +1,14 @@
-// app/register/page.tsx
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import RegisterForm from "../forms/register-form";
 import google from "@/assets/images/icon/google.png";
 import facebook from "@/assets/images/icon/facebook.png";
 import Link from "next/link";
+import withAuthRedirect from "@/utils/withAuthRedirect";
+
+const ProtectedRegisterForm = withAuthRedirect(RegisterForm);
 
 const RegisterArea: React.FC = () => {
   return (
@@ -47,10 +51,10 @@ const RegisterArea: React.FC = () => {
                 role="tabpanel"
                 id="fc1"
               >
-                <RegisterForm accountType="candidate" />
+                <ProtectedRegisterForm accountType="candidate" />
               </div>
               <div className="tab-pane fade" role="tabpanel" id="fc2">
-                <RegisterForm accountType="employer" />
+                <ProtectedRegisterForm accountType="employer" />
               </div>
             </div>
 

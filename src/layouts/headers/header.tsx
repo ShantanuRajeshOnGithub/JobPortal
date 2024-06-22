@@ -7,9 +7,24 @@ import logo from "@/assets/images/logo/logo_01.png";
 import CategoryDropdown from "./component/category-dropdown";
 import LoginModal from "@/app/components/common/popup/login-modal";
 import useSticky from "@/hooks/use-sticky";
+import { useSession } from "@/context/SessionContext"; // Use the custom useSession
+import log from "@/utils/clientLogger";
 
 const Header = () => {
   const { sticky } = useSticky();
+  const { session, fetchWithSession, updateSession } = useSession();
+  const loading = session === null;
+
+  log.debug("Header session, loading:", session, loading);
+  const handleLogout = async () => {
+    try {
+      await fetchWithSession("/api/auth/logout", { method: "POST" });
+      await updateSession(); // Update session after logout
+      window.location.href = "/login";
+    } catch (error) {
+      log.error("Error during logout:", error);
+    }
+  };
   return (
     <>
       <header
@@ -33,17 +48,19 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    {/* <a
-                    href="#"
-                    className="login-btn-one"
-                    data-bs-toggle="modal"
-                    data-bs-target="#loginModal"
-                  >
-                    Login
-                  </a> */}
-                    <Link href="/login" className="login-btn-one tran3s">
-                      Login
-                    </Link>
+                    {!loading && !session && (
+                      <Link href="/login" className="login-btn-one tran3s">
+                        Login
+                      </Link>
+                    )}
+                    {!loading && session && (
+                      <button
+                        onClick={handleLogout}
+                        className="login-btn-one tran3s"
+                      >
+                        Logout
+                      </button>
+                    )}
                   </li>
                   <li className="d-none d-md-block ms-4">
                     <Link href="/candidates-v1" className="btn-one">

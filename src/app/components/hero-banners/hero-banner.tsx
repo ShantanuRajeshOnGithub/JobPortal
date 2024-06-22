@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Import useRouter for redirection
 // internal
 import shape_1 from "@/assets/images/shape/shape_01.svg";
 import shape_2 from "@/assets/images/shape/shape_02.svg";
@@ -13,9 +14,16 @@ import log from "@/utils/clientLogger";
 
 const HeroBanner: React.FC = () => {
   const [users, setUsers] = useState([]);
-  const { fetchWithSession } = useSession();
+  const { session, fetchWithSession } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
+    if (!session) {
+      log.warn("No session found, redirecting to login...");
+      router.push("/login");
+      return;
+    }
+
     const fetchData = async () => {
       try {
         const data = await fetchWithSession("/api/users");
@@ -27,7 +35,7 @@ const HeroBanner: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [session, fetchWithSession, router]);
 
   return (
     <>

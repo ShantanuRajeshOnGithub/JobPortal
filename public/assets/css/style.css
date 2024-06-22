@@ -181,7 +181,7 @@ hr {
   cursor: pointer;
   border-radius: 50%;
   /* background: #00bf58; */
-  background:#0c69a1;
+  background: #0c69a1;
   transition: all 0.3s ease-in-out;
 }
 .scroll-top:after {
@@ -239,7 +239,7 @@ hr {
 .btn-two {
   font-weight: 500;
   /* color: #98bd00; */
-  color:#4cb4f3;
+  color: #4cb4f3;
   position: relative;
   padding-right: 12px;
   border-bottom: 2px solid #98bd00;
@@ -247,7 +247,7 @@ hr {
 }
 .btn-two:hover {
   /* color: #98bd00; */
-  color:#4cb4f3;
+  color: #4cb4f3;
   letter-spacing: 0.2px;
 }
 .btn-two:after {
@@ -2379,7 +2379,7 @@ iframe {
   padding-right: 20px;
   margin-right: 20px;
   line-height: 14px;
-  border-right: 1px solid rgba(255, 255, 255, 0.27);
+  /* border-right: 1px solid rgba(255, 255, 255, 0.27); */
 }
 .menu-style-one .job-post-btn:hover {
   color: #d2f34c;
@@ -3307,7 +3307,7 @@ iframe {
 }
 .category-section-one.bg-color {
   /* background: #f2f9d8; */
-  background:#d8e3f9;
+  background: #d8e3f9;
 }
 .category-section-one .shape_01 {
   right: 0;

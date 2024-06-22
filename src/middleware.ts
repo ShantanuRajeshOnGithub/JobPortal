@@ -87,5 +87,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/users/:path*"], // Adjust paths as needed
+  matcher: ["/api/users/:path*", "/api/auth/logout"], // Adjust paths as needed
 };

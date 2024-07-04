@@ -4,9 +4,9 @@ import cate_icon_3 from '@/assets/images/icon/icon_65.svg';
 import cate_icon_4 from '@/assets/images/icon/icon_68.svg';
 import cate_icon_5 from '@/assets/images/icon/icon_66.svg';
 import cate_icon_6 from '@/assets/images/icon/icon_67.svg';
-import { category_dropdown } from '@/types/category-type';
+import { category_dropdown as CDY} from '@/types/category-type';
 
-const category_dropdown:category_dropdown[] = [
+const category_dropdown: CDY[] = [
   {
     id:1,
     category_items:[

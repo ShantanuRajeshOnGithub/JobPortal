@@ -8,6 +8,8 @@ export interface IUser extends Document {
   password: string;
   accountType: "candidate" | "employee";
   acceptedTerms: boolean;
+  resetToken:string;
+  resetTokenExpiry:Date;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -20,6 +22,14 @@ const UserSchema = new Schema<IUser>({
     enum: ["candidate", "employee"],
   },
   acceptedTerms: { type: Boolean, required: true },
+  resetToken:{
+    type:String,
+    required:false
+  },
+  resetTokenExpiry:{
+    type:Date,
+    required:false
+  }
 });
 
 export default models.User || model<IUser>("User", UserSchema);

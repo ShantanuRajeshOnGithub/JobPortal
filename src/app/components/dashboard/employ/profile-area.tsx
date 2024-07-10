@@ -7,12 +7,14 @@ import CountrySelect from '../candidate/country-select';
 import CitySelect from '../candidate/city-select';
 import StateSelect from '../candidate/state-select';
 import DashboardHeader from '../candidate/dashboard-header';
+import EmployerProfileForm from '../../forms/employer-profile-form';
 
 // props type 
 type IProps = {
   setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
-const EmployProfileArea = ({setIsOpenSidebar}:IProps) => {
+
+const EmployProfileArea = ({ setIsOpenSidebar }: IProps) => {
   return (
     <div className="dashboard-body">
       <div className="position-relative">
@@ -31,55 +33,11 @@ const EmployProfileArea = ({setIsOpenSidebar}:IProps) => {
             </div>
             <button className="delete-btn tran3s">Delete</button>
           </div>
-          <div className="dash-input-wrapper mb-30">
-            <label htmlFor="">Employer Name*</label>
-            <input type="text" placeholder="John Doe" />
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Email*</label>
-                <input type="email" placeholder="companyinc@gmail.com" />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Website*</label>
-                <input type="text" placeholder="http://somename.come" />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Founded Date*</label>
-                <input type="date" />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Company Size*</label>
-                <input type="text" placeholder="700" />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Phone Number*</label>
-                <input type="tel" placeholder="+880 01723801729" />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Category*</label>
-                <input type="text" placeholder="Account, Finance, Marketing" />
-              </div>
-            </div>
-          </div>
-          <div className="dash-input-wrapper">
-            <label htmlFor="">About Company*</label>
-            <textarea className="size-lg" placeholder="Write something interesting about you...."></textarea>
-            <div className="alert-text">Brief description for your company. URLs are hyperlinked.</div>
-          </div>
-        </div>
 
+          {/* Importing the EmployerProfileForm component */}
+          <EmployerProfileForm />
+
+        </div>
 
         <div className="bg-white card-box border-20 mt-40">
           <h4 className="dash-title-three">Social Media</h4>
@@ -206,10 +164,9 @@ const EmployProfileArea = ({setIsOpenSidebar}:IProps) => {
           <a href="#" className="dash-btn-one"><i className="bi bi-plus"></i> Add Another Member</a>
         </div>
 
-
         <div className="button-group d-inline-flex align-items-center mt-30">
-          <a href="#" className="dash-btn-two tran3s me-3">Save</a>
-          <a href="#" className="dash-cancel-btn tran3s">Cancel</a>
+          <button className="dash-btn-two tran3s me-3">Save</button>
+          <button className="dash-cancel-btn tran3s">Cancel</button>
         </div>
       </div>
     </div>

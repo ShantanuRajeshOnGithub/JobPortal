@@ -8,6 +8,7 @@ import ErrorMsg from "../common/error-msg";
 import icon from "@/assets/images/icon/icon_60.svg";
 import { useSession } from "@/context/SessionContext";
 import log from "@/utils/clientLogger";
+import { notifyError,notifySuccess } from "@/utils/toast";
 
 // form data type
 type IFormData = {
@@ -68,7 +69,7 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
   const [showPass, setShowPass] = useState<boolean>(false);
-  const { fetchWithSession } = useSession(); // Use fetchWithSession from useSession
+  const { fetchWithSession } = useSession();
 
   // react hook form
   const {
@@ -100,6 +101,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
 
       if (response.status === 200) {
         reset();
+        notifySuccess("Registration successful!"); // Show success toast
       } else if (response.status === 400) {
         log.error("Bad request error response from server:", response);
       } else {
@@ -107,7 +109,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
       }
     } catch (error) {
       log.error("Error during registration:", error);
-      alert("An unexpected error occurred");
+      notifyError("An unexpected error occurred"); // Show error toast
     }
   };
 
@@ -167,7 +169,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
             <div>
               <input
                 type="checkbox"
-                id={`acceptedTerms-${accountType}`} // Ensure unique ID
+                id={`acceptedTerms-${accountType}`}
                 {...register("acceptedTerms")}
               />
               <label htmlFor={`acceptedTerms-${accountType}`}>

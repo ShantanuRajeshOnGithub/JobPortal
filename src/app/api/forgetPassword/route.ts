@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 import nodemailer from "nodemailer";
 import { v4 as uuidv4 } from "uuid";
-import { string } from "yup";
+
 
 export async function POST(req: NextRequest) {
   let requestData;
@@ -48,16 +48,16 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'shantanurajesh3@gmail.com',
-        pass: 'utas lbul ousb gkzy',
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
       },
     });
 
     const mailOptions = {
-      from: 'shantanurajesh3@gmail.com',
+      from: process.env.GMAIL_USER,
       to: email,
       subject: 'Password Reset',
-      text: `Hi ${username} \n\n\nYou requested a password reset. \n\nPlease click the following link to reset your password: ${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken} \n\n\n\n Thanks and Regrads, \n Hire Haven`,
+      text: `Hi ${username} \n\nYou requested a password reset. \n\nPlease click the following link to reset your password: ${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken} \n\nThanks and Regards, \nHire Haven`,
     };
 
     await transporter.sendMail(mailOptions);

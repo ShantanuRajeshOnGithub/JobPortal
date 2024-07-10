@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Register",
 };
 
-const RegisterPage = () => {
+const  RegisterPage = () => {
   return (
     <Wrapper>
       <div className="main-page-wrapper">

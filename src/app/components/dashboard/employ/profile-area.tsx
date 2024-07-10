@@ -8,6 +8,7 @@ import CitySelect from '../candidate/city-select';
 import StateSelect from '../candidate/state-select';
 import DashboardHeader from '../candidate/dashboard-header';
 import EmployerProfileForm from '../../forms/employer-profile-form';
+import SocialMediaLinksForm from '../../forms/social-media-links-form';
 
 // props type 
 type IProps = {
@@ -39,18 +40,7 @@ const EmployProfileArea = ({ setIsOpenSidebar }: IProps) => {
 
         </div>
 
-        <div className="bg-white card-box border-20 mt-40">
-          <h4 className="dash-title-three">Social Media</h4>
-          <div className="dash-input-wrapper mb-20">
-            <label htmlFor="">Network 1</label>
-            <input type="text" placeholder="https://www.facebook.com/" />
-          </div>
-          <div className="dash-input-wrapper mb-20">
-            <label htmlFor="">Network 2</label>
-            <input type="text" placeholder="https://twitter.com/FIFAcom" />
-          </div>
-          <a href="#" className="dash-btn-one"><i className="bi bi-plus"></i> Add more link</a>
-        </div>
+        <SocialMediaLinksForm />
 
         <div className="bg-white card-box border-20 mt-40">
           <h4 className="dash-title-three">Address & Location</h4>

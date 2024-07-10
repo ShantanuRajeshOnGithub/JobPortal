@@ -1,28 +1,55 @@
 "use client";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSession } from '@/context/SessionContext';
+import { notifySuccess,notifyError } from '@/utils/toast';
 
 const EmployerProfileForm = () => {
-    const { session } = useSession();
-
-    const initialValues = {
-      name: session?.user?.name || '', 
-      email: session?.user?.email || '', 
+  const { session } = useSession();
+  const [initialValues, setInitialValues] = useState({
+      name: '',
+      email: '',
       website: '',
       foundedDate: '',
       companySize: '',
       phoneNumber: '',
       category: '',
       aboutCompany: ''
-    };
+  });
 
   useEffect(() => {
-    if (session?.user) {
-      initialValues.name = session.user.name ?? '';
-      initialValues.email = session.user.email ?? '';
-    }
+      
+      const fetchEmployerProfile = async () => {
+          try {
+              if (session?.user?.email) {
+                  const response = await fetch('/api/get-employer-details', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ email: session.user.email }),
+                  });
+
+                  if (!response.ok) {
+                      throw new Error('Failed to fetch employer profile');
+                  }
+
+                  const data = await response.json();
+                  setInitialValues({
+                      ...initialValues,
+                      ...data.employerProfile 
+                  });
+              }
+          } catch (error) {
+              console.error('Error fetching employer profile:', error);
+              
+          }
+      };
+
+      if (session?.user?.email) {
+          fetchEmployerProfile();
+      }
   }, [session]);
 
   const validationSchema = Yup.object({
@@ -53,8 +80,11 @@ const EmployerProfileForm = () => {
 
       const result = await response.json();
       console.log('Success:', result);
+      notifySuccess('Details updated successfully!');
     } catch (error) {
       console.error('Error:', error);
+      notifyError('Failed to update details');
+
     }
   };
 

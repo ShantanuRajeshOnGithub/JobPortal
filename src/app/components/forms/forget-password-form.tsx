@@ -1,4 +1,7 @@
-import React, { useEffect } from "react";
+
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "@/context/SessionContext";
 import log from "@/utils/clientLogger";
 import ErrorMsg from "../common/error-msg";
-import { notifyError,notifySuccess } from "@/utils/toast";
+import { notifyError, notifySuccess } from "@/utils/toast";
 
 // Form data type
 type IFormData = {
@@ -24,6 +27,7 @@ const resolver: Resolver<IFormData> = yupResolver(schema);
 const ForgetPasswordForm: React.FC = () => {
   const { fetchWithSession } = useSession();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const {
     register,
@@ -48,6 +52,7 @@ const ForgetPasswordForm: React.FC = () => {
 
   // On submit
   const onSubmit = async (data: IFormData) => {
+    setIsLoading(true); // Start loading
     try {
       const response = await fetchWithSession("/api/forgetPassword", {
         method: "POST",
@@ -59,15 +64,19 @@ const ForgetPasswordForm: React.FC = () => {
 
       if (response.status === 200) {
         reset();
-        notifySuccess("Reset link sent to your registered email"); 
+        const mes = "Reset link sent to your registered email";
+        notifySuccess(mes);
       } else if (response.status === 400) {
         log.error("Bad request error response from server:", response);
       } else {
         log.error("Error response from server:", response);
       }
     } catch (error) {
+      const mes = "Error during password reset";
+      notifyError(mes);
       log.error("Error during password reset:", error);
-      notifyError("An unexpected error occurred"); 
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -90,12 +99,48 @@ const ForgetPasswordForm: React.FC = () => {
         <div className="col-12">
           <button
             type="submit"
-            className="btn-eleven fw-500 tran3s d-block mt-20"
+            className={`btn-eleven fw-500 tran3s d-block mt-20 ${isLoading ? 'loading' : ''}`}
+            disabled={isLoading}
           >
-            Send Reset Link
+            {isLoading ? (
+              <div className="loading-animation">Processing...</div>
+            ) : (
+              "Send Reset Link"
+            )}
           </button>
+          <br></br><br></br>
         </div>
       </div>
+      <style jsx>{`
+        .loading-animation {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .btn-eleven.loading {
+          background: #ccc;
+          cursor: not-allowed;
+        }
+        .btn-eleven.loading::after {
+          content: "";
+          width: 20px;
+          height: 20px;
+          border: 2px solid #fff;
+          border-top: 2px solid transparent;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          display: inline-block;
+          margin-left: 10px;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </form>
   );
 };

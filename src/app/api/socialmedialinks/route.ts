@@ -23,9 +23,8 @@ export async function POST(request: NextRequest) {
 
     const result = await db.collection('employer_profile').updateOne(
       { email: email },
-      { $set: { socialMediaLinks: { ...user.socialMediaLinks, ...socialMediaLinks } } }
+      { $set: { socialMediaLinks: socialMediaLinks } }
     );
-
     return NextResponse.json({ message: 'Social media links updated successfully' }, { status: 200 });
   } catch (error) {
     console.error('Error during updating social media links:', error);

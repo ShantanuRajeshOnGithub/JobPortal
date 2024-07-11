@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     // }
     
   if(!email || !password|| !name || !accountType || !acceptedTerms){
-    return NextResponse.json({ error: "check all required fields" }, { status: 400 });
+    return NextResponse.json({ message: "check all required fields" }, { status: 400 });
   }
 
   const client = await clientPromise;
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   // Check if user already exists
   const existingUser = await db.collection("users").findOne({ email });
   if (existingUser) {
-    return NextResponse.json({ error: "User already exists" }, { status: 400 });
+    return NextResponse.json({ message: "User already exists" }, { status: 400 });
   }
 
   // Hash the password
@@ -59,8 +59,8 @@ export async function POST(req: NextRequest) {
       { message: "User created successfully" },
       { status: 201 }
     );
-  } catch (error) {
-    return NextResponse.json({ error: "Error creating user" }, { status: 500 });
+  } catch (message) {
+    return NextResponse.json({ message: "Error creating user" }, { status: 500 });
   }
 }
 

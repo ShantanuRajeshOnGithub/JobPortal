@@ -8,7 +8,6 @@ import CitySelect from '../candidate/city-select';
 import StateSelect from '../candidate/state-select';
 import DashboardHeader from '../candidate/dashboard-header';
 import EmployerProfileForm from '../../forms/employer-profile-form';
-import SocialMediaLinksForm from '../../forms/social-media-links-form';
 
 // props type 
 type IProps = {
@@ -36,11 +35,11 @@ const EmployProfileArea = ({ setIsOpenSidebar }: IProps) => {
           </div>
 
           {/* Importing the EmployerProfileForm component */}
-          <EmployerProfileForm />
+          <EmployerProfileForm/>
 
         </div>
 
-        <SocialMediaLinksForm />
+        
 
         <div className="bg-white card-box border-20 mt-40">
           <h4 className="dash-title-three">Address & Location</h4>

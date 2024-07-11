@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
             { email },
             {
                 projection: {
-                    socialMediaLinks: 0, // Exclude social media links
                     _id: 0 // Exclude _id field
                 }
             }

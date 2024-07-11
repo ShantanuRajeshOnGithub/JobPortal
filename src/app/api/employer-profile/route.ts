@@ -1,3 +1,5 @@
+// api/employer-profile.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 
@@ -10,7 +12,8 @@ export async function POST(req: NextRequest) {
         companySize,
         phoneNumber,
         category,
-        aboutCompany
+        aboutCompany,
+        socialMediaLinks
     } = await req.json();
 
     if (!email || !name || !website || !foundedDate || !companySize || !phoneNumber || !category || !aboutCompany) {
@@ -20,20 +23,21 @@ export async function POST(req: NextRequest) {
     const client = await clientPromise;
     const db = client.db("HireHaven");
 
-    const employer_profile_data = {
+    const employerProfileData = {
         name,
         website,
         foundedDate,
         companySize,
         phoneNumber,
         category,
-        aboutCompany
+        aboutCompany,
+        socialMediaLinks
     };
 
     try {
         const profileResult = await db.collection("employer_profile").updateOne(
             { email },
-            { $set: employer_profile_data },
+            { $set: employerProfileData },
             { upsert: true }
         );
 

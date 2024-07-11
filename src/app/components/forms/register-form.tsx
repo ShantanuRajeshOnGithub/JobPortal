@@ -9,6 +9,7 @@ import icon from "@/assets/images/icon/icon_60.svg";
 import { useSession } from "@/context/SessionContext";
 import log from "@/utils/clientLogger";
 import { notifyError,notifySuccess } from "@/utils/toast";
+import { useRouter } from "next/navigation";
 
 // form data type
 type IFormData = {
@@ -70,6 +71,7 @@ interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const { fetchWithSession } = useSession();
+  const router = useRouter();
 
   // react hook form
   const {
@@ -89,6 +91,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
   });
 
   // on submit
+  
   const onSubmit = async (data: IFormData) => {
     try {
       const response = await fetchWithSession("/api/register", {
@@ -99,19 +102,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
         body: JSON.stringify(data),
       });
 
-      if (response.status === 200) {
+      const responseData = await response.json();
+
+      if (response.ok) {
         reset();
         notifySuccess("Registration successful!"); // Show success toast
-      } else if (response.status === 400) {
-        log.error("Bad request error response from server:", response);
-      } else {
-        log.error("Error response from server:", response);
+        router.push("/login");
+      } 
+       else {
+        
+        log.error("Error response from server:", responseData);
+        notifyError("An unexpected error occurred"); // Show error toast
       }
     } catch (error) {
       log.error("Error during registration:", error);
       notifyError("An unexpected error occurred"); // Show error toast
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -112,17 +112,25 @@ const EmployerProfileForm: React.FC = () => {
     aboutCompany: Yup.string().required('Required')
   });
 
+  
+
   const onSubmit = async (values: EmployerProfileFormData) => {
     try {
+      // Filter out empty social media links
+      const filteredValues = {
+        ...values,
+        socialMediaLinks: values.socialMediaLinks.filter(link => link.network.trim() !== ''),
+      };
+  
       // Submit employer profile data
       const employerResponse = await fetch('/api/employer-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(filteredValues),
       });
-
+  
       if (!employerResponse.ok) {
         throw new Error('Failed to update employer profile');
       }
@@ -135,20 +143,7 @@ const EmployerProfileForm: React.FC = () => {
         return acc;
       }, {} as Record<string, { network: string }>);
 
-      // const socialMediaResponse = await fetch('/api/employer-profile', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',Error fetching user data
-      //   },
-      //   body: JSON.stringify({ email: values.email, socialMediaLinks: formattedLinks }),
-      // });
-
-      // if (!socialMediaResponse.ok) {
-      //   const socialMediaData = await socialMediaResponse.json();
-      //   setError(socialMediaData.message || 'Error updating social media links');
-      //   return;
-      // }
-
+      
       notifySuccess('Details updated successfully!');
     } catch (error) {
       console.error('Error:', error);
@@ -168,7 +163,7 @@ const EmployerProfileForm: React.FC = () => {
           <Form>
             <h4 className="dash-title-three">Profile</h4>
             <div className="dash-input-wrapper mb-30">
-              <label htmlFor="name">Name*</label>
+              <label htmlFor="name"> Employer Name*</label>
               <Field
                 type="text"
                 id="name"

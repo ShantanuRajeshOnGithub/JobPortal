@@ -70,7 +70,7 @@ interface RegisterFormProps {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
   const [showPass, setShowPass] = useState<boolean>(false);
-  const { fetchWithSession } = useSession();
+  const { fetchWithSession } = useSession(); // Use fetchWithSession from useSession
   const router = useRouter();
 
   // react hook form
@@ -91,7 +91,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
   });
 
   // on submit
-  
   const onSubmit = async (data: IFormData) => {
     try {
       const response = await fetchWithSession("/api/register", {
@@ -102,24 +101,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
         body: JSON.stringify(data),
       });
 
-      const responseData = await response.json();
-
-      if (response.ok) {
+      if (response.status==200) {
         reset();
         notifySuccess("Registration successful!"); // Show success toast
         router.push("/login");
-      } 
-       else {
-        
-        log.error("Error response from server:", responseData);
-        notifyError("An unexpected error occurred"); // Show error toast
+      }
+      else if (response.status === 400) {
+        log.error("Bad request error response from server:", response);
+      } else {
+        log.error("Error response from server:", response);
       }
     } catch (error) {
       log.error("Error during registration:", error);
-      notifyError("An unexpected error occurred"); // Show error toast
+      alert("An unexpected error occurred");
     }
   };
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -177,7 +173,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ accountType }) => {
             <div>
               <input
                 type="checkbox"
-                id={`acceptedTerms-${accountType}`}
+                id={`acceptedTerms-${accountType}`} // Ensure unique ID
                 {...register("acceptedTerms")}
               />
               <label htmlFor={`acceptedTerms-${accountType}`}>

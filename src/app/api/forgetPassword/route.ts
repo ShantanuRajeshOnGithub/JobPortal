@@ -46,12 +46,13 @@ export async function POST(req: NextRequest) {
 
     // Send reset password email
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
+        user: process.env.GMAIL_USER,  
+        pass: process.env.GMAIL_PASS,  // App Password (16-character generated password)
       },
     });
+    
 
     const mailOptions = {
       from: process.env.GMAIL_USER,

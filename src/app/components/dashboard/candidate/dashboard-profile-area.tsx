@@ -35,6 +35,14 @@ const DashboardProfileArea = ({setIsOpenSidebar}:IProps) => {
             <label htmlFor="">Full Name*</label>
             <input type="text" placeholder="Md James Brower" />
           </div>
+          <div className="dash-input-wrapper mb-30">
+            <label htmlFor="">Phone Number*</label>
+            <input type="text" placeholder="+91 12345678" />
+          </div>
+          <div className="dash-input-wrapper mb-30">
+            <label htmlFor="">Email*</label>
+            <input type="text" placeholder="mail.com" />
+          </div>
           <div className="dash-input-wrapper">
             <label htmlFor="">Bio*</label>
             <textarea className="size-lg" placeholder="Write something interesting about you...."></textarea>
